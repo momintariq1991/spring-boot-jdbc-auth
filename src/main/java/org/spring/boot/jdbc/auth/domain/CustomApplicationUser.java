@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class CustomUser extends ApplicationUser implements UserDetails {
+public class CustomApplicationUser extends ApplicationUser implements UserDetails {
 
-    public CustomUser(final ApplicationUser applicationUser) {
+    public CustomApplicationUser(final ApplicationUser applicationUser) {
         super(applicationUser);
     }
 

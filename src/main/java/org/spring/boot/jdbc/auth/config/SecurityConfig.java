@@ -1,7 +1,7 @@
 package org.spring.boot.jdbc.auth.config;
 
 import org.spring.boot.jdbc.auth.repository.ApplicationUserRepository;
-import org.spring.boot.jdbc.auth.service.UserService;
+import org.spring.boot.jdbc.auth.service.ApplicationUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,17 +19,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
+    private final ApplicationUserService applicationUserService;
 
     @Autowired
-    public SecurityConfig(final UserService userService) {
-        this.userService = userService;
+    public SecurityConfig(final ApplicationUserService applicationUserService) {
+        this.applicationUserService = applicationUserService;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
-                .userDetailsService(userService)
+                .userDetailsService(applicationUserService)
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
 

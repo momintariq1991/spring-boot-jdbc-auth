@@ -1,6 +1,6 @@
 package org.spring.boot.jdbc.auth.service;
 
-import org.spring.boot.jdbc.auth.domain.CustomUser;
+import org.spring.boot.jdbc.auth.domain.CustomApplicationUser;
 import org.spring.boot.jdbc.auth.domain.ApplicationRole;
 import org.spring.boot.jdbc.auth.domain.ApplicationUser;
 import org.spring.boot.jdbc.auth.dto.ApplicationRoleDto;
@@ -22,16 +22,16 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService implements UserDetailsService {
+public class ApplicationUserService implements UserDetailsService {
 
     private final ApplicationUserRepository applicationUserRepository;
     private final ApplicationRoleRepository applicationRoleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(final ApplicationUserRepository applicationUserRepository,
-                       final ApplicationRoleRepository applicationRoleRepository,
-                       @Lazy final BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public ApplicationUserService(final ApplicationUserRepository applicationUserRepository,
+                                  final ApplicationRoleRepository applicationRoleRepository,
+                                  @Lazy final BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.applicationUserRepository = applicationUserRepository;
         this.applicationRoleRepository = applicationRoleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -43,7 +43,7 @@ public class UserService implements UserDetailsService {
         if (!userOptional.isPresent()) {
             throw new UsernameNotFoundException("Username " + emailAddress + " not found");
         }
-        return userOptional.map(CustomUser::new).get();
+        return userOptional.map(CustomApplicationUser::new).get();
     }
 
     public void save(ApplicationUser applicationUser) {
