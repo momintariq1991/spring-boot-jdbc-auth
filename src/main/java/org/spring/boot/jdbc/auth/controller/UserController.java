@@ -1,7 +1,7 @@
 package org.spring.boot.jdbc.auth.controller;
 
-import org.spring.boot.jdbc.auth.domain.User;
-import org.spring.boot.jdbc.auth.dto.UserDto;
+import org.spring.boot.jdbc.auth.domain.ApplicationUser;
+import org.spring.boot.jdbc.auth.dto.ApplicationUserDto;
 import org.spring.boot.jdbc.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,13 +22,13 @@ public class UserController {
     }
 
     @PostMapping("/sign-up")
-    public void signUp(@RequestBody User user) {
-        userService.save(user);
+    public void signUp(@RequestBody ApplicationUser applicationUser) {
+        userService.save(applicationUser);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/all")
-    public List<UserDto> getAllUsers() {
+    public List<ApplicationUserDto> getAllUsers() {
         return userService.getAllUsers();
     }
 }

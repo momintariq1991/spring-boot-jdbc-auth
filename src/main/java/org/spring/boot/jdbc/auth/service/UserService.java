@@ -1,12 +1,12 @@
 package org.spring.boot.jdbc.auth.service;
 
 import org.spring.boot.jdbc.auth.domain.CustomUser;
-import org.spring.boot.jdbc.auth.domain.Role;
-import org.spring.boot.jdbc.auth.domain.User;
-import org.spring.boot.jdbc.auth.dto.RoleDto;
-import org.spring.boot.jdbc.auth.dto.UserDto;
-import org.spring.boot.jdbc.auth.repository.RoleRepository;
-import org.spring.boot.jdbc.auth.repository.UserRepository;
+import org.spring.boot.jdbc.auth.domain.ApplicationRole;
+import org.spring.boot.jdbc.auth.domain.ApplicationUser;
+import org.spring.boot.jdbc.auth.dto.ApplicationRoleDto;
+import org.spring.boot.jdbc.auth.dto.ApplicationUserDto;
+import org.spring.boot.jdbc.auth.repository.ApplicationRoleRepository;
+import org.spring.boot.jdbc.auth.repository.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,68 +24,68 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final ApplicationUserRepository applicationUserRepository;
+    private final ApplicationRoleRepository applicationRoleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(final UserRepository userRepository,
-                       final RoleRepository roleRepository,
+    public UserService(final ApplicationUserRepository applicationUserRepository,
+                       final ApplicationRoleRepository applicationRoleRepository,
                        @Lazy final BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        this.applicationUserRepository = applicationUserRepository;
+        this.applicationRoleRepository = applicationRoleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
     public UserDetails loadUserByUsername(String emailAddress) throws UsernameNotFoundException {
-        Optional<User> userOptional = userRepository.findByUsername(emailAddress);
+        Optional<ApplicationUser> userOptional = applicationUserRepository.findByUsername(emailAddress);
         if (!userOptional.isPresent()) {
             throw new UsernameNotFoundException("Username " + emailAddress + " not found");
         }
         return userOptional.map(CustomUser::new).get();
     }
 
-    public void save(User user) {
-        user.setId(UUID.randomUUID().toString());
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        Set<Role> roleSet = user.getRoles();
-        user.setRoles(null);
-        userRepository.save(user);
+    public void save(ApplicationUser applicationUser) {
+        applicationUser.setId(UUID.randomUUID().toString());
+        applicationUser.setPassword(bCryptPasswordEncoder.encode(applicationUser.getPassword()));
+        Set<ApplicationRole> applicationRoleSet = applicationUser.getApplicationRoles();
+        applicationUser.setApplicationRoles(null);
+        applicationUserRepository.save(applicationUser);
 
-        for (Role role : roleSet) {
-            role.setUser(user);
-            roleRepository.save(role);
+        for (ApplicationRole applicationRole : applicationRoleSet) {
+            applicationRole.setApplicationUser(applicationUser);
+            applicationRoleRepository.save(applicationRole);
         }
     }
 
-    public List<UserDto> getAllUsers() {
-        List<User> users =  userRepository.findAll();
-        return users
+    public List<ApplicationUserDto> getAllUsers() {
+        List<ApplicationUser> applicationUsers =  applicationUserRepository.findAll();
+        return applicationUsers
                 .stream()
                 .map(this::getDtoFromEntity)
                 .collect(Collectors.toList());
     }
 
-    private UserDto getDtoFromEntity(User user) {
-        String id = user.getId();
-        String username = user.getUsername();
-        String password = user.getPassword();
-        Set<Role> roles = user.getRoles();
+    private ApplicationUserDto getDtoFromEntity(ApplicationUser applicationUser) {
+        String id = applicationUser.getId();
+        String username = applicationUser.getUsername();
+        String password = applicationUser.getPassword();
+        Set<ApplicationRole> applicationRoles = applicationUser.getApplicationRoles();
 
-        UserDto userDto = new UserDto()
+        ApplicationUserDto applicationUserDto = new ApplicationUserDto()
                 .setId(id)
                 .setUsername(username)
                 .setPassword(password)
-                .setRoles(roles.stream().map(this::getDtoFromEntity).collect(Collectors.toSet()));
-        return userDto;
+                .setRoles(applicationRoles.stream().map(this::getDtoFromEntity).collect(Collectors.toSet()));
+        return applicationUserDto;
     }
 
-    private RoleDto getDtoFromEntity(Role role) {
-        Integer id = role.getId();
-        String name = role.getName();
+    private ApplicationRoleDto getDtoFromEntity(ApplicationRole applicationRole) {
+        Integer id = applicationRole.getId();
+        String name = applicationRole.getName();
 
-        return new RoleDto()
+        return new ApplicationRoleDto()
                 .setId(id)
                 .setName(name);
     }

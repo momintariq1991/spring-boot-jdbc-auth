@@ -1,6 +1,6 @@
 package org.spring.boot.jdbc.auth.config;
 
-import org.spring.boot.jdbc.auth.repository.UserRepository;
+import org.spring.boot.jdbc.auth.repository.ApplicationUserRepository;
 import org.spring.boot.jdbc.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
-@EnableJpaRepositories(basePackageClasses = UserRepository.class)
+@EnableJpaRepositories(basePackageClasses = ApplicationUserRepository.class)
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 

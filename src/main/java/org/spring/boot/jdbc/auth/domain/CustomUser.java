@@ -7,15 +7,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class CustomUser extends User implements UserDetails {
+public class CustomUser extends ApplicationUser implements UserDetails {
 
-    public CustomUser(final User user) {
-        super(user);
+    public CustomUser(final ApplicationUser applicationUser) {
+        super(applicationUser);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles()
+        return getApplicationRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
                 .collect(Collectors.toList());

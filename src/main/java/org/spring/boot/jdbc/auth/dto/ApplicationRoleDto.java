@@ -1,6 +1,6 @@
 package org.spring.boot.jdbc.auth.dto;
 
-public class RoleDto {
+public class ApplicationRoleDto {
 
     private Integer id;
     private String name;
@@ -9,7 +9,7 @@ public class RoleDto {
         return id;
     }
 
-    public RoleDto setId(Integer id) {
+    public ApplicationRoleDto setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -18,7 +18,7 @@ public class RoleDto {
         return name;
     }
 
-    public RoleDto setName(String name) {
+    public ApplicationRoleDto setName(String name) {
         this.name = name;
         return this;
     }

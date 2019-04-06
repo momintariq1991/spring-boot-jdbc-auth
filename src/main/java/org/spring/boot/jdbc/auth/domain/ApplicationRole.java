@@ -3,8 +3,8 @@ package org.spring.boot.jdbc.auth.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "app_role")
-public class Role {
+@Table(name = "application_role")
+public class ApplicationRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -12,14 +12,14 @@ public class Role {
     @Column(nullable = false)
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "app_user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "application_user_id", nullable = false)
+    private ApplicationUser applicationUser;
 
     public Integer getId() {
         return id;
     }
 
-    public Role setId(Integer id) {
+    public ApplicationRole setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -28,17 +28,17 @@ public class Role {
         return name;
     }
 
-    public Role setName(String name) {
+    public ApplicationRole setName(String name) {
         this.name = name;
         return this;
     }
 
-    public User getUser() {
-        return user;
+    public ApplicationUser getApplicationUser() {
+        return applicationUser;
     }
 
-    public Role setUser(User user) {
-        this.user = user;
+    public ApplicationRole setApplicationUser(ApplicationUser applicationUser) {
+        this.applicationUser = applicationUser;
         return this;
     }
 }
