@@ -1,8 +1,8 @@
 package org.spring.boot.jdbc.auth.service;
 
-import org.spring.boot.jdbc.auth.domain.CustomApplicationUser;
 import org.spring.boot.jdbc.auth.domain.ApplicationRole;
 import org.spring.boot.jdbc.auth.domain.ApplicationUser;
+import org.spring.boot.jdbc.auth.domain.CustomApplicationUser;
 import org.spring.boot.jdbc.auth.dto.ApplicationRoleDto;
 import org.spring.boot.jdbc.auth.dto.ApplicationUserDto;
 import org.spring.boot.jdbc.auth.repository.ApplicationRoleRepository;
